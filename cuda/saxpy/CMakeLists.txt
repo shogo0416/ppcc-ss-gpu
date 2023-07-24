@@ -1,0 +1,39 @@
+#===============================================================================
+#  CMakeLists.txt for CUDA Sample Applications
+#
+#  Copyright 2023 Shogo OKADA (shogo.okada@kek.jp), KEK-CRC, Japan
+#
+#  ***************************
+#  !! DONOT EDIT THIS FILE  !!
+#  ***************************
+#===============================================================================
+cmake_minimum_required(VERSION 3.17 FATAL_ERROR)
+#===============================================================================
+set(APP_NAME cuda-saxpy)
+project(${APP_NAME} CUDA)
+
+#-------------------------------------------------------------------------------
+set(CMAKE_BUILD_TYPE "Release")
+
+#-------------------------------------------------------------------------------
+# Supported CUDA architecture
+# 80 : A100
+# 86 : RTX3090 / A6000
+# 89 : RTX4090 / RTX6000 Ada Generation
+#set(CMAKE_CUDA_ARCHITECTURES "80;86;89")
+set(CMAKE_CUDA_ARCHITECTURES native)
+
+#-------------------------------------------------------------------------------
+set(CMAKE_CXX_STANDARD 17)
+
+#-------------------------------------------------------------------------------
+add_executable(${APP_NAME})
+include_directories(${PROJECT_SOURCE_DIR}/../../common)
+target_sources(${APP_NAME} PRIVATE
+  main.cu
+  ../../common/cuda_helper.cu
+  ../../common/kernel_timer.cu
+)
+
+#-------------------------------------------------------------------------------
+install(TARGETS ${APP_NAME} DESTINATION ${PROJECT_SOURCE_DIR}/../../bin)
