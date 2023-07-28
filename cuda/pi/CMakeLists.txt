@@ -10,7 +10,7 @@
 cmake_minimum_required(VERSION 3.17 FATAL_ERROR)
 #===============================================================================
 set(APP_NAME cuda-pi)
-project(${APP_NAME} CUDA)
+project(${APP_NAME} CUDA CXX)
 
 #-------------------------------------------------------------------------------
 set(CMAKE_BUILD_TYPE "Release")
@@ -24,16 +24,30 @@ set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CUDA_ARCHITECTURES native)
 
 #-------------------------------------------------------------------------------
-set(CMAKE_CXX_STANDARD 17)
+if (PPCC_ENV)
+  set(CMAKE_CUDA17_EXTENSION_COMPILE_OPTION "-std=c++17")
+else()
+  set(CMAKE_CXX_STANDARD 17)
+endif()
 
 #-------------------------------------------------------------------------------
 add_executable(${APP_NAME})
-include_directories(${PROJECT_SOURCE_DIR}/../../common)
+
 target_sources(${APP_NAME} PRIVATE
   main.cu
   ../../common/cuda_helper.cu
   ../../common/kernel_timer.cu
 )
+
+target_include_directories(${APP_NAME} PRIVATE
+  ${PROJECT_SOURCE_DIR}/../../common
+)
+
+
+if (PPCC_ENV)
+  link_directories(/opt/anaconda3/envs/jupyter/lib)
+  target_link_libraries(${APP_NAME} PRIVATE stdc++)
+endif()
 
 #-------------------------------------------------------------------------------
 install(TARGETS ${APP_NAME} DESTINATION ${PROJECT_SOURCE_DIR}/../../bin)
