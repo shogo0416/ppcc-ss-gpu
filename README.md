@@ -16,8 +16,9 @@
 $ git clone git@github.com:shogo0416/ppcc-ss-gpu
 ```
 
-GitHubのアカウントを持っていない場合はZIPファイルをダウンロードして、
-計算環境にコピーして下さい。
+> **Note**
+> GitHubのアカウントを持っていない場合はZIPファイルをダウンロードして、
+> 計算環境にコピーして下さい。
 
 
 ### ビルドの実行
@@ -31,7 +32,8 @@ $ make install
 ```
 
 > **Note**
-> cmakeのversionは`3.17`以上を想定しています。
+> Cmakeのversionは`3.17`以上を想定しています。
+> `cmake3`コマンドで`Makefile`を作成してください。
 
 `make install`が済むと`bin`ディレクトリが作成され、
 そこに実行ファイルがあります。
@@ -41,6 +43,13 @@ $ cd ../bin/
 $ ls
 cpp-pi  cpp-saxpy  cuda-pi  cuda-saxpy
 ```
+
+|実行ファイル|説明|
+|------------|----|
+|cpp-saxpy|CPUで実行するSAXPYのプログラム|
+|cpp-pi|CPUで実行する円周率の計算(マルチスレッド対応)|
+|cuda-saxpy|GPUで実行するSAXPYのプログラム|
+|cuda-pi|GPUで実行する円周率の計算|
 
 > **Note**
 > ご自身でGPU環境を持っていてそこで走らせる場合は、
