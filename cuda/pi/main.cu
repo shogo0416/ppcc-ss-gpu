@@ -203,7 +203,7 @@ int main(int argc, char** argv)
   msg << "- pi  : " << std::setprecision(15) << pi << std::endl;
   msg << "- err : " << std::defaultfloat << err << " (ppm)" << std::endl;
 
-  std::cout << msg.str() << std::endl;
+  std::cout << msg.str();
 
   std::exit(EXIT_SUCCESS);
 }
