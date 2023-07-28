@@ -123,6 +123,9 @@ int main(int argc, char** argv)
       case 'h':
         ::print_usage();
         std::exit(EXIT_SUCCESS);
+      case 'g':
+        gpuid = ppcc::lexical_cast<int>(optarg);
+        break;
       case 's':
         seed = ppcc::lexical_cast<size_t>(optarg);
         break;
