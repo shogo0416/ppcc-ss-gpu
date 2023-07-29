@@ -11,6 +11,21 @@
 
 ## コードのビルド
 
+### 前準備
+2台あるGPUのある計算環境のいずれかにログインし、`.bashrc`に次の3行を加えてください。
+
+```
+export CUDA_PATH=/usr/local/cuda
+export PATH=$CUDA_PATH/bin:$PATH 
+export LD_LIBRARY_PATH=$CUDA_PATH/lib64:$LD_LIBRARY_PATH
+```
+
+変更を反映します。
+
+```
+. .bashrc
+```
+
 ### コードの取得
 
 ```
@@ -20,7 +35,6 @@ $ git clone git@github.com:shogo0416/ppcc-ss-gpu
 > **Note**
 > GitHubのアカウントを持っていない場合はZIPファイルをダウンロードして、
 > 計算環境にコピーして下さい。
-
 
 ### ビルドの実行
 `build`ディレクトリを作り、そこでコードのビルドを実行するとします。
@@ -63,14 +77,15 @@ cpp-pi  cpp-saxpy  cuda-pi  cuda-saxpy
 
 サマースクールの4台の計算環境のうち2台にそれぞれNVIDIA A100 GPUが1基ずつ搭載されています。
 各環境においてMIG機能により1基のA100 GPUのリソースを分割して7基の「小さなGPU」(以下、インスタンスと呼ぶ)が
-起動しています。GPUで何らかの計算を実行するときは、空いているインスタンスを利用するようにしてください。
+起動しています。GPUで何らかの計算を実行するときには、空いているインスタンスを利用するようにしてください。
 以下、インスタンスを指定してCUDAプログラムを実行する方法を示します。
 
 ### インスタンスの空き状況の確認
 
-`nvidia-smi`コマンドを実行し、`MIG devices`テーブルで7つのインスタンスが
+`nvidia-smi`コマンドを実行すると`MIG devices`テーブルが表示されて、7つのインスタンスが
 起動していることが分かります。それぞれのインスタンスは`GI ID`や`MID Dev`
-で識別されます。下の例では`GI ID`は7から13、`MIG Dev`は0から6が割り振られています。
+で識別されます。下の例では、各インスタンスには`GI ID`が7から13、`MIG Dev`は0から6が
+割り振られていることが確認できます。
 
 ```
 $ nvidia-smi
@@ -107,14 +122,14 @@ Fri Jul 28 21:48:46 2023
 |  0   13   0   6  |              12MiB /  4864MiB  | 14      0 |  1   0    0    0    0 |
 |                  |               0MiB /  8191MiB  |           |                       |
 +------------------+--------------------------------+-----------+-----------------------+
+(以下省略)
 ```
 
-
 `nvidia-smi`を実行したときに一番下に表示される`Processes`というテーブルには使用中の
-インスタンスが表示されます。下の例では、`GI ID`が9と12のインスタンスが使用中です。
-また、それぞれの`MIG Dev`は`MIG devices`テーブルから2と5です。これら以外のインスタンスを
-使ってCUDAプログラムを走らせます。例として`GI ID`が7 (`MIG Dev`が0)のインスタンスを使うこと
-にします。このとき、インスタンスの指定で使う識別子は`UUID`になります。
+インスタンスが表示されます。下の例では、`GI ID`が9と12 (それぞれの`MIG Dev`は2と5) の
+インスタンスが使用中です。これら以外のインスタンスを使ってCUDAプログラムを走らせます。
+例として`GI ID`が7 (`MIG Dev`が0)のインスタンスを使うことにします。
+このとき、インスタンスの指定で使う識別子は`UUID`になります。
 
 ```
 $ nvidia-smi
@@ -142,7 +157,7 @@ MIG-554c4086-6ae7-5b25-8c39-e5980d23ae92です。
 ```
 $ nvidia-smi -L
 GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-07ce7acc-c626-f86c-3b8c-170a84e404b3)
-  MIG 1g.5gb      Device  0: (UUID: MIG-554c4086-6ae7-5b25-8c39-e5980d23ae92)
+  MIG 1g.5gb      Device  0: (UUID: MIG-554c4086-6ae7-5b25-8c39-e5980d23ae92) <== このインスタンスを使う
   MIG 1g.5gb      Device  1: (UUID: MIG-9b9d3d09-b7d8-5351-af1e-5607f0fbd02a)
   MIG 1g.5gb      Device  2: (UUID: MIG-0dfbf33f-6966-5b43-a167-2cb7be339805)
   MIG 1g.5gb      Device  3: (UUID: MIG-1baae807-2fcd-5438-8a89-d320680ade08)
@@ -182,3 +197,14 @@ $ nvidia-smi
 ```
 ./bin/cuda-pi -h
 ```
+
+## CuPyのサンプルコードの実行について
+
+VSCodeの`Remote SSH`拡張機能でGPU環境にSSH接続し、`Jupyter`拡張機能を使うことで
+VSCode上でNotebookファイルを走らせることが可能です。
+
+![Jupyter](./imgs/cupy_on_vscode.png)
+
+その際、Notebookを開いて`カーネルの選択`においてCuPyがインストールされたPython環境を指定する必要があります。
+
+![Kernel](./imgs/kernel_selection.png)
