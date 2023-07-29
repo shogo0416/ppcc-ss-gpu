@@ -199,10 +199,13 @@ $ nvidia-smi
 ./bin/cuda-pi -h
 ```
 
-## CuPyのサンプルコードの実行について
+## CuPyのサンプルコードについて
 
 `cupy`ディレクトリには、MNISTデータセットを使った推論を題材としたCuPyのサンプルコードがあります。
-VSCodeの`Remote SSH`拡張機能でGPU環境にSSH接続し、`Jupyter`拡張機能を使うことで
+
+### VSCode上で走らせる
+
+例えば、VSCodeの`Remote SSH`拡張機能でGPU環境にSSH接続し、`Jupyter`拡張機能を使うことで
 VSCode上でNotebookファイル`cupy_example.ipynb`を走らせることが可能です。
 
 ![Jupyter](./imgs/cupy_on_vscode.png)
@@ -218,3 +221,10 @@ MIG環境においてCuPyを走らせると自動的に空いているインス�
 使用中のGPUリソースの開放を必ず行ってください。
 
 ![Release](./imgs/release.png)
+
+### 参考文献
+ゼロから作るDeep Learning
+Python で学ぶディープラーニングの理論と実装
+斎藤 康毅 著
+ISBN: 978-4-87311-758-4
+第3.6節 手書き数字認識
