@@ -86,6 +86,7 @@ int main(int argc, char** argv)
     {"help",        no_argument,       nullptr, 'h'},
     {"seed",        required_argument, nullptr, 's'},
     {"num_element", required_argument, nullptr, 'n'},
+    {"num_thread",  required_argument, nullptr, 't'},
     {nullptr,       0,                 nullptr, 0}
   };
 
