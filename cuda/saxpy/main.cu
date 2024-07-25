@@ -183,8 +183,8 @@ int main(int argc, char** argv)
 
   std::cout << msg.str();
 
-  if (x)  { delete x; }
-  if (y)  { delete y; }
+  if (x)  { delete [] x; }
+  if (y)  { delete [] y; }
   if (dx) { cudaFree(dx); }
   if (dy) { cudaFree(dy); }
 
