@@ -39,11 +39,5 @@ target_include_directories(${APP_NAME} PRIVATE
   ${PROJECT_SOURCE_DIR}/../../common
 )
 
-
-if (PPCC_ENV)
-  link_directories(/opt/anaconda3/envs/jupyter/lib)
-  target_link_libraries(${APP_NAME} PRIVATE stdc++)
-endif()
-
 #-------------------------------------------------------------------------------
 install(TARGETS ${APP_NAME} DESTINATION ${PROJECT_SOURCE_DIR}/../../bin)
